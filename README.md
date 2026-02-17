@@ -2,7 +2,7 @@
 SPDX-License-Identifier: AGPL-3.0-or-later-->
 # Spynnn
 
-### **(NOTE: Spynnn is in VERY active development and is in no way _usable_)**
+### **(NOTE: Spynnn is in VERY active development and is _in no way usable_)**
 
 **Spynnn** is a domain-specific language (DSL) MIDI instrument designed for **Algorithmic DJing** (similar to algorithmic music). It provides a high-level, text-based interface for manipulating audio playback, mixing, and effects in real-time using Mixxx as an audio engine.
 
