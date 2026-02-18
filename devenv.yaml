@@ -1,0 +1,6 @@
+inputs:
+  nixpkgs:
+    url: github:cachix/devenv-nixpkgs/rolling
+  tracey-src:
+    url: github:spynnn-org/tracey
+    flake: false
