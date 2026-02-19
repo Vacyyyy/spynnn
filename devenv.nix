@@ -51,7 +51,7 @@ in
   # Rust toolchain via devenv's built-in module
   languages.rust = {
     enable = true;
-    components = [ "rustc" "cargo" "clippy" "rustfmt" "rust-src" ];
+    components = [ "rustc" "cargo" "clippy" "rustfmt" ];
   };
 
   # Additional packages
@@ -63,7 +63,7 @@ in
   ];
 
   # Environment variables
-  env.RUST_SRC_PATH = "${pkgs.rust.packages.stable.rustPlatform.rustLibSrc}";
+  env.RUST_SRC_PATH = lib.mkForce "${pkgs.rustPlatform.rustLibSrc}";
 
   # Shell hook
   enterShell = ''
