@@ -1,0 +1,14 @@
+# tracey
+.tracey/
+
+# devenv
+.devenv*
+devenv.local.nix
+devenv.local.yaml
+.devenv/
+
+# direnv
+.direnv
+
+# pre-commit
+.pre-commit-config.yaml
