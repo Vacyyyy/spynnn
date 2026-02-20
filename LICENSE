@@ -3,8 +3,8 @@ Copyright © 2026 Vacyyyy
 The code in this repository is licensed under the GNU Affero General Public License v3 (AGPLv3).
 You are free to use, modify, and distribute the code under the terms of AGPLv3.
 
-Trademark and Logo Notice:
-The project name "Spynnn" and related components ("SpynnnIR", "SpynnnLang", "SpynnnUI") and all brand assets (`brand/assets/`) are trademarks of Vacyyyy.
+Trademark Notice:
+The project name "Spynnn" and related components ("SpynnnIR", "SpynnnLang", "SpynnnUI") and all brand assets (`brand/assets/*`) are trademarks of Vacyyyy.
 You may not use the name or logo for modified versions, forks, or derivative works without express written permission from the copyright/trademark holder.
 
 See `LICENSE-AGPL` for the full AGPLv3 terms.

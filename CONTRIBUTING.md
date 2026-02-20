@@ -17,8 +17,7 @@ I hope you can also respect the work I put into this project, _including_ the sp
 
 With that out of the way, onto some legal stuff. With spynnn-org not being a legal entity, I, Vacyyyy, as the creator, hold the copyright.
 
-The project name "Spynnn" and related components ("SpynnnIR", "SpynnnLang", "SpynnnUI") 
-and all brand assets (`brand/assets/`) are trademarks of Vacyyyy. Use in forks or derivative projects is prohibited without permission. This ensures that modified versions do not cause confusion with the official project. 
+The project name "Spynnn" and related components' name "SpynnnIR", "SpynnnLang", and "SpynnnUI", and all brand assets (`brand/assets/*`) are trademarks of Vacyyyy. Use in forks or derivative projects is prohibited without permission. This ensures that modified versions do not cause confusion with the official project. 
 
 All code, however, is licensed under AGPLv3, so you are free to fork, modify, and redistribute the software as long as you comply with the AGPLv3 terms.
 
