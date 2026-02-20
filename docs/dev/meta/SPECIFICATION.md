@@ -7,9 +7,9 @@ SPDX-License-Identifier: AGPL-3.0-or-later-->
 # Development Process Specification
 
 ## 1. Core Philosophy
-This repository adheres to a **Traceable Inverted Literate Programming** methodology.
+Being made for, among other things, live performances, the Spynnn project understands itself to be **minimally-critical** under the umbrella of functional safety. We adhere to a **Traceable Inverted Literate Programming** methodology.
 
-1.  **Explicit Traceability:** Every line of logic must be traced back to a specific requirement or specification via [`tracey`](https://github.com/bearcove/tracey).
+1.  **Explicit Traceability:** Every line of logic must be traced back to a specific requirement or specification via [`tracey`](https://github.com/spynnn-org/tracey).
 2.  **Code implements the Spec:** The code source files are the source of truth for implementation, but they are nodes in a larger Requirement Graph.
 3.  **Hermetic Tooling:** The build environment is defined strictly by Nix. We do not rely on required system-installed tools.
 4.  **Linear History:** We enforce a strict, linear commit history via Jujutsu (`jj`).
@@ -26,17 +26,16 @@ The flake provides the following pinned binaries:
     *   `just`: Command runner.
 *   **Documentation:**
     *   `typst`: CLI compiler for diagrams.
-    *   `doc-glue`: Custom Rust binary for extracting Typst from comments.
 *   **Version Control:** `jujutsu` (`jj`) and `cocogitto` (`cog`).
 
 ### 2.2. The Interface (`Justfile`)
-The `Justfile` abstracts the `tracey` pipeline.
+The `Justfile` abstracts the `tracey` pipeline, testing, linting, formatting, building, running, among other things.
 
 **Commands:**
 *   `just dev`: Enters the Nix shell.
 *   `just test`: Runs unit tests and verifies `tracey` coverage.
-*   `just lint`: Runs Format + Clippy + **Tracey Graph Check** (ensures no dangling requirements).
-*   **`just trace`**: Runs `tracey parse` to build the requirements graph and generate the HTML traceability matrix.
+*   `just lint`: Runs Format + Clippy + Tracey Graph Check (ensures no dangling requirements).
+*   `just trace`: Runs `tracey parse` to build the requirements graph and generate the HTML traceability matrix.
 *   `just doc`: Runs Typst pre-processor -> `cargo doc`.
 
 ## 3. Documentation Architecture & Tracing

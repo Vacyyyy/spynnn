@@ -10,8 +10,8 @@ SPDX-License-Identifier: AGPL-3.0-or-later-->
 
 Thank you for your interest in contributing. Speaking as the admin of this project, I do not take help for granted, whether it be discussions, pull requests, input, feedback, bug reporting, issues, or whatever else.
 
-I hope you can also respect the work I put into this project, _including_ the specific, strict, and perhaps even pedantic workflows I enforce. I am aware that the workflow I enforce through CI and policies makes it harder for outsiders to contribute code. **One of the primary philosohpies of this project is correctness; ease of access for new code contributors is simply secondary to this**. If you are a software developer, want to contribute, but don't want to follow this project's workflows, first of all I encourage you to give it a chance and see its potential, please consider opening an issue for your contribution regardless—just respect the project's issue workflow in that case.
-**If you you give the workflow a try, you should see that I put a lot of work into making the DX as seemless as possible and guiding you through it.**
+I hope you can also respect the work I put into this project, _including_ the specific, strict, and perhaps even pedantic processes I enforce. I am aware that the process I enforce through CI and policies makes it harder for outsiders to contribute code. **One of the primary philosohpies of this project is correctness; ease of access for new code contributors is simply secondary to this**. If you are a software developer, want to contribute, but don't want to follow this project's processes, first of all I encourage you to give it a chance and see its potential, please consider opening an issue for your contribution regardless—just respect the project's issue process in that case.
+**If you you give the process a try, you should see that I put a lot of work into making the DX as seemless as possible and guiding you through it.**
 
 ## Legal matters
 
@@ -192,11 +192,11 @@ Closed issues can be reopened if new information becomes available or if the clo
 
 ## Pull requests
 
-**Please open a feature before opening a Pull Request, except for the most trivial of changes.**
+**Please open an Issue before opening a Pull Request, except for the most trivial of changes.**
 
-For any Pull Request, this project requires the maintainer to have read relevant development documentation (see `docs/dev/`), have understand the philosophies of this project, especially regarding the enforcement of our workflow.
+For any Pull Request, this project requires the contributor to have read relevant development documentation (see `docs/dev/`), have understand the philosophies of this project, especially regarding the enforcement of our process.
 
-**If you do not use the required workflow, CI and this project's policies WILL REJECT YOUR PULL REQUEST.**
+**If you do not use the required process, CI and this project's policies WILL REJECT YOUR PULL REQUEST.**
 
 This will only be overwritten extreme cases, for example when enforment was in error or it is a security-critical PR. We are thankful for your interest in contributing, but please respect this projects work _and_ its philosophy and policies.
 
@@ -206,24 +206,24 @@ Thank you for your interest in contributing code to address an open issue. Befor
 
 #### Before You Begin
 
-1. **Read the contribution guidelines**: Thoroughly review `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, and `docs/dev/` to understand the project's philosophy, workflow, and strict requirements.
+1. **Read the contribution guidelines**: Thoroughly review `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, and `docs/dev/` to understand the project's philosophy, process, and strict requirements.
 
 2. **Check the issue status**: 
    - Ensure the issue is still open and hasn't been assigned to someone else
    - Look for labels like `help-wanted` or `good-first-issue` that indicate the maintainer actively welcomes contributions (if you find an Issue with such a tag, contribute anyways, if you would like)
    - Check if there are any existing PRs linked to the issue
 
-1. **Understand the workflow**: This project enforces strict workflows through CI and policies. Review `docs/dev/` to understand the required development practices. **PRs that don't follow the workflow will be rejected.** For a guide, see [below](#development).
+1. **Understand the process**: This project enforces strict development processes through CI and policies. Review `docs/dev/` to understand the required development practices. **PRs that don't follow the process will be rejected.** For a guide, see [below](#development).
 
 2. **Comment on the issue**: Before starting work, comment on the issue to:
    - Express your interest in working on it
    - Ask any clarifying questions
    - Outline your proposed approach (if applicable)
-   - Wait for maintainer confirmation to avoid duplicate work
+   - Optionally: Wait for maintainer confirmation to avoid duplicate work
 
 #### During Development
 
-1. **Follow project standards and workflows** (see below)
+1. **Follow project standards and processes** (see [below](#development))
 
 2. **Test thoroughly**:
    - Verify your changes work as intended
@@ -272,7 +272,7 @@ You certify that you have the right to submit the code under this license.
 
 #### What to Expect
 
-- **CI checks**: Your PR must pass all automated checks. The workflow is strict but designed to ensure correctness.
+- **CI checks**: Your PR must pass all automated checks. The process is strict but designed to ensure correctness.
 - **Code review**: The maintainer will review your code. Be patient—maintainers are volunteers.
 - **Possible revisions**: You may be asked to make changes. This is normal and helps maintain code and documentation quality.
 - **Final decision**: The maintainers have final say on whether a PR is merged. Respect this decision. If you believe a decision was made in error, _constructive_ criticism is welcome.
@@ -280,15 +280,15 @@ You certify that you have the right to submit the code under this license.
 #### Important Reminders
 
 - **Trivial changes only**: Only very trivial changes (typo fixes, etc.) should skip the "open an issue first" step. For anything else, an issue must exist.
-- **Workflow is mandatory**: This project's philosophy prioritizes correctness over ease of contribution. The strict workflow is intentional and will be enforced.
-- **Developer experience**: While the workflow is strict, the project provides [guidance](#development) and tooling to make the process as seamless as possible. Give it a chance.
+- **process is mandatory**: This project's philosophy prioritizes correctness over ease of contribution. The strict process is intentional and will be enforced.
+- **Developer experience**: While the process is strict, the project provides [guidance](#development) and tooling to make the process as seamless as possible. Give it a chance.
 
 ### Questions?
 
 If you have questions about:
 - **The issue itself**: Comment on the issue
 - **General development**: Use Discussions
-- **The workflow**: Review `docs/dev/`. Ask in Discussions or write to maintainers' emails (find our emails in git)
+- **The process**: Review `docs/dev/`. Ask in Discussions or write to maintainers' emails (find our emails in git)
 
 ## Development
 
@@ -300,7 +300,7 @@ If you are interested in the _why_ and the technical side of this development pr
 
 #### 1. Installation
 
-This project uses a hermetic build environment. You do not need to install Rust, Python, or build tools globally. You only need **Nix**, the package manager, and **Git**. **Nix is a hard requirement**; development using other system-wide tools is not supported. 
+This project uses a hermetic build environment. You do not need to install Rust tooling, or build tools system-wide. You only need **Nix** (the package manager, _not_ NixOS), **Git** and **Jujutsu**. **Nix is a hard requirement**; development using other system-wide tools is not supported.
 
 ##### Step 1: Install Nix
 Install the Nix package manager with Flake support enabled.
@@ -311,7 +311,7 @@ mkdir -p ~/.config/nix
 echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
 ```
 
-(NOTE: Development on Windows is not supported (you may attempt development in WSL at your own risk))
+(NOTE: Nix on Windows is not supported by Nix, and, as such, we don't support development on Windows (you may attempt development in WSL at your own risk))
 
 ### Step 2: Activate Environment
 Clone the repository and enter the shell.
@@ -322,25 +322,23 @@ git clone https://github.com/spynnn-org/spynnn.git
 
 **Option A: Manual Activation (Ephemeral)**
 ```bash
-nix develop
-# You are now inside the hermetic shell with all tools (cargo, just, jj, tracey) available.
+devenv shell
+# You are now inside the hermetic shell with all tools (cargo, just, tracey) available.
 ```
 
 **Option B: Direnv (Automatic - Recommended)**
 If you use `direnv`, add `.envrc`:
 ```bash
-echo "use flake" > .envrc
 direnv allow
 # Tools are now available automatically whenever you `cd` into the directory.
 ```
 
 #### 2. The Interface (`just`)
 
-We do not use raw `cargo` commands for workflow tasks. Use `just` to interact with the project.
+We do not use raw `cargo` commands for process tasks. Use `just` to interact with the project.
 
 | Command | Action |
 | :--- | :--- |
-| **`just dev`** | Manually enters the Nix shell (if not using direnv). |
 | **`just test`** | Runs unit tests, doctests, and verifies spec coverage. |
 | **`just lint`** | Runs code formatting (`rustfmt`), linter (`clippy`), and checks the Tracey graph integrity. |
 | **`just trace`** | Compiles the Requirement Graph. Outputs the Traceability Matrix to `tracey/matrix.html`. |
