@@ -76,14 +76,14 @@ in
 
     # Pick logo into variable first
     if [ ! -f "$INIT_FLAG" ]; then
-      logo="$(awk 'BEGIN { RS=""; } { print; exit }' "$LOGOS_FILE")"
+      logo="$(tail -n +3 "$LOGOS_FILE" | awk 'BEGIN { RS=""; } { print; exit }')"
       touch "$INIT_FLAG"
     else
-      logo="$(awk -v seed=$RANDOM '
+      logo="$(tail -n +3 "$LOGOS_FILE" | awk -v seed=$RANDOM '
         BEGIN { RS=""; srand(seed); }
         { a[NR]=$0 }
         END { if (NR>0) print a[int(rand()*NR) + 1] }
-      ' "$LOGOS_FILE")"
+      ')"
     fi
 
     # Calculate logo width (longest line length)
