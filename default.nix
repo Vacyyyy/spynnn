@@ -1,3 +1,5 @@
+# Copyright © 2026 Vacyyyy and contributors (see git history)
+# SPDX-License-Identifier: AGPL-3.0-or-later
 { pkgs ? import <nixpkgs> {} }:
 
 let
