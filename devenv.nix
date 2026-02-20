@@ -71,7 +71,7 @@ in
   env.RUST_SRC_PATH = lib.mkForce "${pkgs.rustPlatform.rustLibSrc}";
 
   enterShell = ''
-    LOGOS_FILE="${./brand/assets/LOGO_VARIATIONS}"
+    LOGOS_FILE="${./brand/assets/logos/LOGO_VARIATIONS}"
     INIT_FLAG=".devenv/first_run"
 
     echo ""

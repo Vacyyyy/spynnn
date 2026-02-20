@@ -1,6 +1,6 @@
 <!--Copyright © 2026 Vacyyyy and contributors
 SPDX-License-Identifier: AGPL-3.0-or-later-->
-![](brand/assets/text_logo_image_bw_short.svg)
+![](brand/assets/logos/text_logo_image_bold_bw_short.svg)
 
 # Spynnn
 
