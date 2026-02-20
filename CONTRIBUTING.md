@@ -15,11 +15,18 @@ I hope you can also respect the work I put into this project, _including_ the sp
 
 ## Legal matters
 
-With that out of the way, onto some legal stuff. With spynnn-org not being a legal entity, I, as the maintainer, hold the copyright. The maintainer licenses this project to the world under GPLv3, which, as an individual contributor and user, should be in your interest. We do not use a CLA. Still, please be aware, by contributing, you agree to GitHub's Terms of Service, specifically the "Inbound=Outbound" rule, which states that:
+With that out of the way, onto some legal stuff. With spynnn-org not being a legal entity, I, Vacyyyy, as the creator, hold the copyright.
+
+The project name "Spynnn" and related components ("SpynnnIR", "SpynnnLang", "SpynnnUI") 
+and all brand assets (`brand/assets/`) are trademarks of Vacyyyy. Use in forks or derivative projects is prohibited without permission. This ensures that modified versions do not cause confusion with the official project. 
+
+All code, however, is licensed under AGPLv3, so you are free to fork, modify, and redistribute the software as long as you comply with the AGPLv3 terms.
+
+We do not use a Contributer License Agreement. Still, please be aware, by contributing, you agree to GitHub's Terms of Service, specifically the "Inbound=Outbound" rule, which states that:
 
 > Whenever you make a contribution to a repository containing notice of a license, you license your contribution under the same terms, and you agree that you have the right to license your contribution under those terms.
 
-This means once you contribute, you generally do not have the right to revoke the license you give me, the maintainer, to your contribution, even though there is no CLA. For technical legal reason, this project enforces every file (except `LICENSE` and `NOTICE`) to contain this copyright header at the very top (optionally in comments, as per the file's needs):
+This means once you contribute, you generally do not have the right to revoke the license you give to the creator, even though there is no CLA. For technical legal reason, this project enforces every file (except `LICENSE` and `NOTICE`) to contain this copyright header at the very top (optionally in comments, as per the file's needs):
 
 ```
 Copyright © 2026 Vacyyyy and contributors (see git history)
