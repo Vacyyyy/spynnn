@@ -296,14 +296,15 @@ Please read the section on [Pull Requests](#pull-requests) first, before you sta
 
 If you are interested in the _why_ and the technical side of this development process, see [Development Process Specification](docs/dev/meta/SPECIFICATION.md).
 
-### Start here (development process guide)
+### Setup
 
-#### 1. Installation
+This project uses a hermetic build environment. You do not need to install Rust tooling, or build tools system-wide. You need **Nix** (the package manager, _not_ NixOS), **devenv**, **Git**, **Jujutsu**, and a commit signing setup using GPG. **Nix is a hard requirement**; development using other system-wide tools is not supported.
 
-This project uses a hermetic build environment. You do not need to install Rust tooling, or build tools system-wide. You only need **Nix** (the package manager, _not_ NixOS), **Git** and **Jujutsu**. **Nix is a hard requirement**; development using other system-wide tools is not supported.
+#### Install Nix
 
-##### Step 1: Install Nix
 Install the Nix package manager with Flake support enabled.
+
+(NOTE: Nix does not exist on Windows, and, as such, we don't support development on Windows (you may attempt development in WSL at your own risk))
 
 ```bash
 sh <(curl -L https://nixos.org/nix/install) --daemon
@@ -311,29 +312,53 @@ mkdir -p ~/.config/nix
 echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
 ```
 
-(NOTE: Nix on Windows is not supported by Nix, and, as such, we don't support development on Windows (you may attempt development in WSL at your own risk))
+#### Install devenv
+```bash
+nix-env --install --attr devenv -f https://github.com/NixOS/nixpkgs/tarball/nixpkgs-unstable
+```
 
-### Step 2: Activate Environment
-Clone the repository and enter the shell.
+#### Clone the repository and configure Jujutsu
+
+If you do not have a working GPG commit signing setup, please follow: [this guide](https://docs.github.com/en/authentication/managing-commit-signature-verification/generating-a-new-gpg-key) followed by [this guide](https://docs.github.com/en/authentication/managing-commit-signature-verification/adding-a-gpg-key-to-your-github-account) and then continue below. If you need to use the ssh backend, please see [these docs](https://docs.jj-vcs.dev/latest/config/#ssh-signing).
+
 ```bash
 cd <WHERE YOU WANT THE REPOSITORY>
-git clone https://github.com/spynnn-org/spynnn.git
+jj git clone https://github.com/spynnn-org/spynnn.git
+jj config set --repo user.name "<YOUR NAME OR NAME>"
+jj config set --repo user.email "<YOUR EMAIL>"
+jj config set --repo signing.behavior true
+jj config set --repo signing.backend gpg
+## You can set `key` to anything accepted by `gpg -u`
+## If not set then defaults to the key associated with `user.email`
+## If your key of choice has the same email you set above as a uid
+## you can skip setting a key explicity, otherwise:
+# jj config set --repo signing.key <VALUE>
+jj config set --repo git.sign-on-push true
+jj config set --repo ui.show-cryptographic-signatures true
+jj config set --repo revsets.sign "all() & mine() & ~(heads(::@) & empty())"
+jj config set --repo remotes.origin.auto-track-bookmarks "*"
+jj config set --repo remotes.upstream.auto-track-bookmarks "main"
 ```
 
-**Option A: Manual Activation (Ephemeral)**
+#### Optional—recommended: Install direnv
+
+See [here](https://direnv.net/#basic-installation).
+
+#### Entering the development shell
+
+##### Option A: Manual Activation (Ephemeral)
 ```bash
 devenv shell
-# You are now inside the hermetic shell with all tools (cargo, just, tracey) available.
 ```
 
-**Option B: Direnv (Automatic - Recommended)**
-If you use `direnv`, add `.envrc`:
+##### Option B: Direnv (Automatic—Recommended)
+If you use `direnv`:
 ```bash
 direnv allow
-# Tools are now available automatically whenever you `cd` into the directory.
+## Tools are now available automatically whenever you `cd` into the directory.
 ```
 
-#### 2. The Interface (`just`)
+### 2. The Interface (`just`)
 
 We do not use raw `cargo` commands for process tasks. Use `just` to interact with the project.
 
@@ -345,17 +370,17 @@ We do not use raw `cargo` commands for process tasks. Use `just` to interact wit
 | **`just doc`** | Generates HTML documentation, compiling embedded Typst diagrams. |
 | **`just doc-watch`** | Serves documentation on `localhost`, live-reloading as you edit Rust files. |
 
-#### 3. The Development Loop
+### 3. The Development Loop
 
 We strictly use **Jujutsu (`jj`)** for version control. Do not use `git` commands directly (except if you really know what you are doing), CI will reject it. If you are not used to `jj`, we recommend reading `jj help -k tutorial`.
 
-##### 3.1. Start a Task
+#### 3.1. Start a Task
 Create a new anonymous working copy off the main branch:
 ```bash
 jj new main
 ```
 
-##### 3.2. Implement & Tag (Tracey)
+#### 3.2. Implement & Tag (Tracey)
 We use `tracey` to link code to specs. You **must** add tags if you are implementing features.
 
 **Linking Logic to Requirements:**
@@ -379,7 +404,7 @@ fn test_password_hashing() {
 }
 ```
 
-##### 3.3. Verify Changes
+#### 3.3. Verify Changes
 Run the full suite. This checks both code correctness and graph integrity.
 ```bash
 just test
@@ -387,21 +412,19 @@ just lint
 ```
 *If `just lint` fails with "Dangling Requirement," you defined a spec tag but didn't implement it, or implemented logic without a test verifying it.*
 
-##### 3.4. Commit
+#### 3.4. Commit
 Describe your changes. This generates the required `Change-Id` footer automatically.
 ```bash
 jj describe -m "feat: implement auth handshake"
 ```
 
-##### 3.5. Push
+#### 3.5. Push
 Push the change to the remote.
 ```bash
 jj git push
 ```
 
----
-
-#### 4. Diagram Reference
+### 4. Diagram Reference
 
 Simple ASCII diagrams are allowed. For complex diagrams do not use Mermaid, use Typst. Embed Typst code directly in Rust documentation comments wrapped in triple backticks.
 

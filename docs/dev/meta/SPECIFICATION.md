@@ -12,27 +12,27 @@ Being made for, among other things, live performances, the Spynnn project unders
 1.  **Explicit Traceability:** Every line of logic should be traced back to a specific requirement or specification via [`tracey`](https://github.com/spynnn-org/tracey).
 2.  **Code implements the Spec:** The code source files are the source of truth for implementation, but they are nodes in a larger Requirement Graph.
 3.  **Hermetic Tooling:** The build environment is defined strictly by Nix. We do not rely on required system-installed tools.
-4.  **Linear History:** We enforce a strict, linear commit history via Jujutsu (`jj`).
+4.  **Linear History:** We enforce a strict, linear commit history with `Change-Id`s from [`Jujutsu`](https://github.com/jj-vcs/jj).
 
-## 2. The Hermetic Environment (Nix)
+## 2. The Hermetic Environment
 
-The root `flake.nix` defines the single source of truth for the toolchain.
+The root `devenv.nix` defines the single source of truth for the toolchain.
 
-### 2.1. The Toolchain (`buildInputs`)
+### 2.1. The Toolchain
 The flake provides the following pinned binaries:
 *   **Core:** `rustc`, `cargo`, `clippy`, `rustfmt`.
 *   **Governance & Tracing:**
     *   `tracey`: The requirements tracing engine.
-    *   `just`: Command runner.
+    *   `just`: Command runner, the primary dev interface.
 *   **Documentation:**
     *   `typst`: CLI compiler for diagrams.
 *   **Version Control:** `jujutsu` (`jj`) and `cocogitto` (`cog`).
 
-### 2.2. The Interface (`Justfile`)
+### 2.2. The Interface
 The `Justfile` abstracts the `tracey` pipeline, testing, linting, formatting, building, running, among other things.
 
 **Commands:**
-*   `just dev`: Enters the Nix shell.
+*   `just dev`: Enters the development shell.
 *   `just test`: Runs unit tests and verifies `tracey` coverage.
 *   `just lint`: Runs Format + Clippy + Tracey Graph Check (ensures no dangling requirements).
 *   `just trace`: Runs `tracey parse` to build the requirements graph and generate the HTML traceability matrix.
@@ -42,7 +42,7 @@ The `Justfile` abstracts the `tracey` pipeline, testing, linting, formatting, bu
 
 We use `tracey` to link three layers of abstraction: **Requirements** (Markdown), **Specifications** (Markdown/Rust), and **Implementation/Verification** (Rust).
 
-### 3.1. High-Level Requirements (`dev_docs/`)
+### 3.1. High-Level Requirements
 Business requirements and Architecture Decision Records (ADRs) live in `dev_docs/`.
 *   **Format:** Markdown with frontmatter.
 *   **Tagging:** defined via strict naming conventions in files.
@@ -66,7 +66,7 @@ Implementation details live inside `.rs` files. Instead of just describing logic
     //! This module handles the JWT handshakes.
     ```
 
-### 3.3. Verification (Tests)
+### 3.3. Verification, Tests
 We strictly separate "Logic Tests" from "Verification Tests."
 *   **Logic Tests:** Standard `#[test]` for internal consistency.
 *   **Verification Tests:** Tests that explicitly validate a spec. These must define a `verifies:` tag in the comment immediately preceding the test function.
@@ -79,8 +79,8 @@ We strictly separate "Logic Tests" from "Verification Tests."
     }
     ```
 
-### 3.4. Diagrams (Typst)
-We continue to use **Typst** for diagrams.
+### 3.4. Diagrams
+We use **Typst** for diagrams (very simple diagrams may use ASCII art).
 *   **Usage:** Embed Typst code in comments.
 *   **Traceability:** Diagrams usually illustrate a specific spec. The comment block containing the Typst code should arguably implement a spec tag.
 
@@ -112,7 +112,7 @@ Interaction is primarily via `jj`.
 *   **Checks:**
     1.  **Trace Integrity:** Fails if `tracey` detects "dangling" requirements (defined but not implemented/verified).
     2.  **Clean Build:** Compiles in release.
-    3.  **Linear History:** `jj` enforcement.
+    3.  **Linear History:** Enforce `Change-Id`s and make use of GitHub policies.
 
 ---
 
@@ -123,25 +123,13 @@ Interaction is primarily via `jj`.
 **Decision:** Use `tracey` to create a hard-linked graph between Requirements (Markdown) and Implementation (Rust).
 **Consequences:** High confidence in coverage. Requires discipline to tag code blocks.
 
-## ADR-002: Enforcement of Executable Documentation
-**Decision:** All code blocks in docs must be Rust Doctests.
+## ADR-002: Enforcement of Jujutsu via Change-Id
+**Decision:** Enforce `Change-Id` footers to ensure linear history (together with GitHub policies).
 
-## ADR-003: Hermetic Environment via Nix
-**Decision:** `flake.nix` defines the universe, including the `tracey` binary.
-
-## ADR-004: Typst for Diagrams
-**Decision:** Embed Typst source code in Rust comments.
-
-## ADR-005: Enforcement of Jujutsu via Change-ID
-**Decision:** Enforce `Change-Id` footers to ensure linear history.
-
-## ADR-006: Tracey as the System of Record
+## ADR-003: Tracey as the System of Record
 **Context:** We need to know if a feature is fully implemented and tested.
-**Decision:** We adopt [tracey](https://github.com/bearcove/tracey).
+**Decision:** We adopt [tracey](https://github.com/spynnn-org/tracey).
 *   **Requirements** live in `dev_docs/*.md`.
 *   **Specs** live in `dev_docs/*.md` or `src/**/*.rs`.
 *   **Tests** in `src/**/*.rs` act as validators.
-**Consequences:** Replaces generic "Obsidian" knowledge base with a structured Requirement Graph. Obsidian can still be used as a Markdown editor, but `tracey` owns the relationships.
-
-## ADR-007: Split Authority CI Model
-**Decision:** Remote CI enforces the Traceability Graph integrity. You cannot merge code that claims to implement a missing spec.
+**Consequences:** Replaces generic knowledge base with a structured Requirement Graph (`tracey` owns the relationships).
