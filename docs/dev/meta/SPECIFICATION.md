@@ -7,9 +7,9 @@ SPDX-License-Identifier: AGPL-3.0-or-later-->
 # Development Process Specification
 
 ## 1. Core Philosophy
-Being made for, among other things, live performances, the Spynnn project understands itself to be **minimally-critical** under the umbrella of functional safety. We adhere to a **Traceable Inverted Literate Programming** methodology.
+Being made for, among other things, live performances, the Spynnn project understands itself to be **safety-minimal** under the umbrella of functional safety. We adhere to a **Traceable Inverted Literate Programming** methodology.
 
-1.  **Explicit Traceability:** Every line of logic must be traced back to a specific requirement or specification via [`tracey`](https://github.com/spynnn-org/tracey).
+1.  **Explicit Traceability:** Every line of logic should be traced back to a specific requirement or specification via [`tracey`](https://github.com/spynnn-org/tracey).
 2.  **Code implements the Spec:** The code source files are the source of truth for implementation, but they are nodes in a larger Requirement Graph.
 3.  **Hermetic Tooling:** The build environment is defined strictly by Nix. We do not rely on required system-installed tools.
 4.  **Linear History:** We enforce a strict, linear commit history via Jujutsu (`jj`).
