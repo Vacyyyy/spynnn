@@ -1,5 +1,7 @@
 <!--Copyright © 2026 Vacyyyy and contributors
 SPDX-License-Identifier: AGPL-3.0-or-later-->
+![](brand/assets/text_logo_image_bw_short.svg)
+
 # Spynnn
 
 ### **(NOTE: Spynnn is in VERY active development and is _in no way usable_)**
