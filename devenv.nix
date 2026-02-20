@@ -1,11 +1,14 @@
 { pkgs, lib, inputs, config, ... }:
-
 let
+  cargoToml = builtins.fromTOML (builtins.readFile "${inputs.tracey-src}/crates/tracey/Cargo.toml");
+
   tracey = pkgs.rustPlatform.buildRustPackage {
     pname = "tracey";
-    version = "0.0.0-rev-${inputs.tracey-src.shortRev}";
-
+    version = cargoToml.package.version;
     src = inputs.tracey-src;
+
+    # Ensure --version can show git hash in Nix store builds (no .git metadata).
+    TRACEY_GIT_COMMIT = inputs.tracey-src.shortRev or "unknown";
 
     cargoLock = {
       lockFile = "${inputs.tracey-src}/Cargo.lock";
@@ -21,7 +24,7 @@ let
 
     pnpmDeps = pkgs.fetchPnpmDeps {
       pname = "tracey-dashboard";
-      version = "0.0.0-rev-${inputs.tracey-src.shortRev}";
+      version = "${cargoToml.package.version}-rev-${inputs.tracey-src.shortRev}";
       src = inputs.tracey-src;
       sourceRoot = "source/crates/tracey/src/bridge/http/dashboard";
       fetcherVersion = 2;
@@ -35,7 +38,6 @@ let
     ];
 
     pnpmRoot = "crates/tracey/src/bridge/http/dashboard";
-
     doCheck = false;
 
     meta = {
@@ -47,7 +49,7 @@ in
 {
   cachix.pull = [ "spynnn-org" ];
   cachix.push = "spynnn-org";
-  
+
   # Rust toolchain via devenv's built-in module
   languages.rust = {
     enable = true;
@@ -60,17 +62,69 @@ in
     pkgs.typst
     pkgs.jujutsu
     pkgs.cocogitto
+    pkgs.just
   ];
 
   # Environment variables
   env.RUST_SRC_PATH = lib.mkForce "${pkgs.rustPlatform.rustLibSrc}";
 
-  # Shell hook
   enterShell = ''
-    echo "------------------------------------------------"
-    echo "👻 Traceable Dev Environment Active"
-    echo "   Tracey: $(tracey --version) (Pinned to devenv.lock)"
-    echo "   Rust:   $(rustc --version)"
-    echo "------------------------------------------------"
+    LOGOS_FILE="${./brand/assets/LOGO_VARIATIONS}"
+    INIT_FLAG=".devenv/first_run"
+
+    echo ""
+
+    # Pick logo into variable first
+    if [ ! -f "$INIT_FLAG" ]; then
+      logo="$(awk 'BEGIN { RS=""; } { print; exit }' "$LOGOS_FILE")"
+      touch "$INIT_FLAG"
+    else
+      logo="$(awk -v seed=$RANDOM '
+        BEGIN { RS=""; srand(seed); }
+        { a[NR]=$0 }
+        END { if (NR>0) print a[int(rand()*NR) + 1] }
+      ' "$LOGOS_FILE")"
+    fi
+
+    # Calculate logo width (longest line length)
+    logo_width=$(printf "%s\n" "$logo" | awk '{ if (length > max) max = length } END { print max }')
+
+    # Get terminal width
+    term_width=$(tput cols 2>/dev/null || echo 0)
+
+    if [ "$term_width" -ge "$logo_width" ]; then
+      # Terminal wide enough → disable wrapping
+      printf '\033[?7l'
+      printf "%s\n" "$logo"
+      printf '\033[?7h'
+    else
+      # Terminal too narrow → render normally
+      printf "%s\n" "$logo"
+      echo ""
+      echo '⚠ Please resize your terminal to at least '"$logo_width"' columns (current: '"$term_width"') to see our logo properly.'
+    fi
+
+    echo ""
+    echo "╷"
+    echo "│ Spynnn: development shell"
+    echo "│ Copyright © 2026 Vacyyyy and contributors (see git history)"
+    echo "│"
+    echo "│ This program is distributed in the hope that it will be useful,"
+    echo "│ but WITHOUT ANY WARRANTY; without even the implied warranty of"
+    echo "│ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the"
+    echo "│ \`LICENSE\` and \`NOTICE\` for more details."
+    echo "│"
+    echo "│ The source code for this version is available at https://github.com/spynnn-org/spynnn."
+    echo "│"
+    echo "│"
+    echo "│ Shell with:"
+    echo "│ Tracey:  $(tracey --version) (from spynnn-org/tracey)"
+    echo "│ Rust:    $(rustc --version)"
+    echo "│ Cargo:   $(cargo --version)"
+    echo "│ Rustdoc: $(rustdoc --version)"
+    echo "│ Clippy:  $(cargo clippy --version)"
+    echo "│ Rustfmt: $(rustfmt --version)"
+    echo "│ Just:    $(just --version)"
+    echo "╰─────────────────────────────────────────────────────────────────────────────────────────────────╴"
   '';
 }
